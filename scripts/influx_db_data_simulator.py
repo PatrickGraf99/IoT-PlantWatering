@@ -5,7 +5,7 @@ import time
 
 # Configuration
 url = "http://localhost:8086"  # InfluxDB URL
-token = "FjnVIivUwZ01ZWhbqzEU0SQGkmY2L7oQX3xwtBUPMhwEZwefV-AjsLkhzG-kfNAAtSj-tay3qTVMdV7E93j9DQ=="     # Replace with your admin token
+# token = ""     # Replace with your admin token
 org = "iot"                    # Organization name
 bucket = "iot-data"            # Bucket name
 
