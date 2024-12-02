@@ -1,0 +1,1 @@
+echo "Shutting down docker..."docker-compose down

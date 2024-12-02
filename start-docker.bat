@@ -1,4 +1,3 @@
-@echo off
 REM Start Docker Compose containers (Grafana and InfluxDB)
 docker-compose up -d
 
