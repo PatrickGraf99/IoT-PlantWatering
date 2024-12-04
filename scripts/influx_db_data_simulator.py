@@ -2,10 +2,15 @@ from influxdb_client import InfluxDBClient, Point
 from influxdb_client.client.write_api import SYNCHRONOUS
 import random
 import time
+import os
+from dotenv import load_dotenv
 
-# Configuration
+
+load_dotenv()
+
+# Configuration, all changes here must also be made in docker.yml
 url = "http://localhost:8086"  # InfluxDB URL
-# token = ""     # Replace with your admin token
+token = os.getenv("INFLUXDB_API_TOKEN") 
 org = "iot"                    # Organization name
 bucket = "iot-data"            # Bucket name
 
@@ -14,9 +19,9 @@ client = InfluxDBClient(url=url, token=token, org=org)
 write_api = client.write_api(write_options=SYNCHRONOUS)
 
 # Simulate data for a single plant
-plant_name = "Efeutute"
+plant_names = ["Efeutute", "Monstera", "Ficus"]
 
-def generate_data():
+def generate_data(plant_name):
     point = (
         Point("plant_data")
         .tag("plant_name", plant_name)
@@ -31,9 +36,10 @@ def generate_data():
 try:
     print("Starting data simulation...")
     while True:
-        data_point = generate_data()
-        write_api.write(bucket=bucket, org=org, record=data_point)
-        print(f"Data written: {data_point}")
+        for plant_name in plant_names:
+            data_point = generate_data(plant_name)
+            write_api.write(bucket=bucket, org=org, record=data_point)
+            print(f"Data written: {data_point}")
         time.sleep(5)
 except KeyboardInterrupt:
     print("Simulation stopped.")

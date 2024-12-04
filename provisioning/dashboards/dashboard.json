@@ -15,6 +15,7 @@
       }
     ]
   },
+  "description": "This dashboard is used to display data for the plants. The plant to observe can be set in a textfield",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
@@ -24,14 +25,49 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "de5mr8o6mn9xcd"
+        "uid": "P951FEA4DE68E13C5"
       },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Temperatur",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
           },
           "mappings": [],
+          "max": 40,
+          "min": 10,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -40,8 +76,108 @@
                 "value": null
               },
               {
-                "color": "red",
-                "value": 80
+                "color": "dark-blue",
+                "value": 18
+              },
+              {
+                "color": "dark-blue",
+                "value": 29
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.3.1",
+      "targets": [
+        {
+          "query": "from(bucket: \"iot-data\")\r\n  |> range(start: -1h)\r\n  |> filter(fn: (r) => r._measurement == \"plant_data\")\r\n  |> filter(fn: (r) => r._field == \"temperature\") \r\n  |> filter(fn: (r) => r.plant_name == \"${selected_plant}\")",
+          "refId": "A"
+        }
+      ],
+      "timeShift": "0h",
+      "title": "Temperature",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P951FEA4DE68E13C5"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": true,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Bodenfeuchte",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "blue",
+                "value": 50
               }
             ]
           }
@@ -52,54 +188,69 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 0
+        "y": 8
       },
       "id": 1,
       "options": {
-        "minVizHeight": 75,
-        "minVizWidth": 75,
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
         },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true,
-        "sizing": "auto"
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
       },
       "pluginVersion": "11.3.1",
       "targets": [
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "de5mr8o6mn9xcd"
+            "uid": "P951FEA4DE68E13C5"
           },
-          "query": "from(bucket: \"iot-data\")\r\n  |> range(start: -30m)\r\n  |> filter(fn: (r) => r._measurement == \"plant_data\")\r\n",
+          "hide": false,
+          "query": "from(bucket: \"iot-data\")\r\n  |> range(start: -1h)\r\n  |> filter(fn: (r) => r._measurement == \"plant_data\")\r\n  |> filter(fn: (r) => r._field == \"ground_moisture\") \r\n  |> filter(fn: (r) => r.plant_name == \"${selected_plant}\") \r\n",
           "refId": "A"
         }
       ],
-      "timeShift": "1h",
-      "title": "Test Panel",
-      "type": "gauge"
+      "timeShift": "0h",
+      "title": "Ground Moisture",
+      "type": "timeseries"
     }
   ],
   "preload": false,
   "schemaVersion": 40,
   "tags": [],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "current": {
+          "text": "Efeutute",
+          "value": "Efeutute"
+        },
+        "name": "selected_plant",
+        "options": [
+          {
+            "selected": true,
+            "text": "Efeutute",
+            "value": "Efeutute"
+          }
+        ],
+        "query": "Efeutute",
+        "type": "textbox"
+      }
+    ]
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "Test-Dashboard",
+  "title": "Plant Data Display",
   "uid": "ce5nf3s316v40b",
-  "version": 2,
+  "version": 13,
   "weekStart": ""
 }
