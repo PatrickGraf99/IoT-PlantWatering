@@ -91,9 +91,11 @@ All changes you make are only local! Data on your machine will not be shared, sa
 A way to import data sources and dashboards automatically is planned if enough time is left at the end of the project.
 
 # Future Plans
+```
 Switching out the SQLite Database for Influx, combining the already existing NODE-Red System with the newly built Grafana/Influx System - WIP
 Documentation of entire project - WIP
 Building a new UI in Grafana - WIP
 Get AI help - Planned
 Support multiple plants - Way to show data for mutliple plants is planned; Getting data from multiple sensors is not planned right now
 Using a better sensor - WIP
+```
