@@ -53,13 +53,33 @@ To see data in Grafana a dashboard is needed. Go to Dashboards and click on "New
 After that a dashboard named "Plant Data Display" should show up. Open it by clicking on it.
 
 ## Troubleshooting
+The Python Script doesn't work - Make sure all needed libraries are installed using pip. Also make sure you set the correct token in your .env file since it will be used to quthorize writing data to Grafana. 
 Grafana/InfluxDB are not loading - Check if Docker is started
 Docker doesn't work - Ensure that Docker Desktop is running
 The data source is not working - Check if you used the correct values in your setup.
 I don't see any data in Grafana - Use the InfluxDB UI to check if there is actual data in the database. Use the simulator to simulate data
 Data is in the database and the connetion works, but I can't see anything in Grafana - In your dashboard click on the 3 dots in the top right corner of one of the timelines and click on edit. Make sure InfluxDB is selected as data source and the query is correct. Set the display time to Last 15 minutes and try refreshing manually. Also check wheter the textbox on top contains a plant name. If not you can enter Efeutute to test
 
-# Understaing the Hardware
+Your file structure after running the docker for the first time should look something like this
+
+iot-plantwatering/
+├── .env                         # Environment variables for the project
+├── .gitignore                   # Ignored files and directories
+├── README.md                    # Documentation for the project
+├── docker-compose.yml           # Docker Compose configuration
+├── scripts/                     # Directory for the simulation script
+│   └── influx_data_simulator.py # Plant data simulation script
+├── provisioning/                # Grafana provisioning files
+│   ├── dashboards/              # Dashboards provisioning folder
+│   │   ├── dashboards.yml       # Dashboard provisioning config
+│   │   └── dashboard.json       # Example exported dashboard JSON
+├── data/                        # Persistent data storage for Grafana and InfluxDB
+│   ├── grafana/                 # Grafana persistent storage
+│   └── influxdb/                # InfluxDB persistent storage
+
+
+
+# Understanding the Hardware
 The used Hardware will be documented. WIP. 
 
 # Following the installation
