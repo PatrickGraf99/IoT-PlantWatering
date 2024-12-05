@@ -82,9 +82,16 @@ iot-plantwatering/
 # Understanding the Hardware
 The used Hardware will be documented. WIP. 
 
-# Following the installation
+# After the installation
 After making changes to the dashboard, should you plan on publishing these changes, it is neccessary that you click on share -> Export -> save to file and create a new .json file in IOT-PlantWatering/provisioning/dashboards.
 
 All changes you make are only local! Data on your machine will not be shared, same for dashboards, data sources etc. 
 
-A system to import data sources and dashboards automatically is planned if enough time is left at the end of the project.
+A way to import data sources and dashboards automatically is planned if enough time is left at the end of the project.
+
+# Future Plans
+Documentation of entire project - WIP
+Building a new UI in Grafana - WIP
+Get AI help - Planned
+Support multiple plants - Way to show data for mutliple plants is planned; Getting data from multiple sensors is not planned right now
+Using a better sensor - WIP
