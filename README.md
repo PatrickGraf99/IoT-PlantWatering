@@ -52,6 +52,9 @@ You can leave the rest as is. Clicking on "Save & test" should display a success
 To see data in Grafana a dashboard is needed. Go to Dashboards and click on "New", then select "Import". Import the .json file from IOT_PlantWatering/provisioning/dashboards. Click on import.
 After that a dashboard named "Plant Data Display" should show up. Open it by clicking on it.
 
+### Stopping the System
+Either double-click on stop-docker.bat or type "docker-compose down" in the command prompt.
+
 ## Troubleshooting
 The Python Script doesn't work - Make sure all needed libraries are installed using pip. Also make sure you set the correct token in your .env file since it will be used to quthorize writing data to Grafana. 
 Grafana/InfluxDB are not loading - Check if Docker is started
