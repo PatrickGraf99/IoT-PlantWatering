@@ -62,6 +62,7 @@ Data is in the database and the connetion works, but I can't see anything in Gra
 
 Your file structure after running the docker for the first time should look something like this
 
+```
 iot-plantwatering/
 ├── .env                         # Environment variables for the project
 ├── .gitignore                   # Ignored files and directories
@@ -76,7 +77,7 @@ iot-plantwatering/
 ├── data/                        # Persistent data storage for Grafana and InfluxDB
 │   ├── grafana/                 # Grafana persistent storage
 │   └── influxdb/                # InfluxDB persistent storage
-
+```
 
 
 # Understanding the Hardware
