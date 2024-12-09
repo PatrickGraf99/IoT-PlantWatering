@@ -44,11 +44,11 @@
               },
               {
                 "color": "green",
-                "value": 15
+                "value": 20
               },
               {
                 "color": "red",
-                "value": 35
+                "value": 30
               }
             ]
           },
@@ -488,6 +488,6 @@
   "timezone": "browser",
   "title": "Plant Data Display",
   "uid": "ce5nf3s316v40b",
-  "version": 32,
+  "version": 36,
   "weekStart": ""
 }
