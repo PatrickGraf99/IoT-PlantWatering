@@ -134,7 +134,7 @@
               "mode": "none"
             },
             "thresholdsStyle": {
-              "mode": "line"
+              "mode": "dashed"
             }
           },
           "mappings": [],
@@ -191,6 +191,31 @@
       "timeShift": "0h",
       "title": "Temperature Timeline of ${selected_plant}",
       "type": "timeseries"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 18,
+        "w": 7,
+        "x": 16,
+        "y": 0
+      },
+      "id": 7,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>AI Advice</title>\n    <style>\n        body {\n            font-family: Arial, sans-serif;\n            margin: 0;\n            padding: 0;\n            display: flex;\n            justify-content: flex-end;\n            align-items: flex-start;\n            height: 100vh;\n            background-color: #f4f4f4;\n        }\n        .ai-support {\n            width: 300px;\n            padding: 20px;\n            background-color: #fff;\n            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);\n            border-radius: 8px;\n            margin: 20px;\n        }\n        .ai-support h3 {\n            margin-top: 0;\n            margin-bottom: 15px;\n        }\n        .ai-support textarea {\n            width: 100%;\n            height: 150px;\n            padding: 10px;\n            font-size: 14px;\n            border: 1px solid #ddd;\n            border-radius: 4px;\n            resize: none;\n        }\n        .ai-support button {\n            width: 100%;\n            padding: 10px;\n            font-size: 16px;\n            background-color: #007bff;\n            color: #fff;\n            border: none;\n            border-radius: 4px;\n            cursor: pointer;\n            margin-top: 10px;\n        }\n        .ai-support button:hover {\n            background-color: #0056b3;\n        }\n    </style>\n</head>\n<body>\n    <div class=\"ai-support\">\n        <h3>AI Support</h3>\n        <textarea id=\"ai-response\" placeholder=\"AI response will appear here...\" readonly></textarea>\n        <button id=\"get-ai-advice\">Get AI Advice</button>\n    </div>\n</body>\n</html>\n",
+        "mode": "html"
+      },
+      "pluginVersion": "11.3.1",
+      "title": "Panel Title",
+      "type": "text"
     },
     {
       "datasource": {
@@ -321,7 +346,11 @@
               },
               {
                 "color": "blue",
-                "value": 50
+                "value": 20
+              },
+              {
+                "color": "blue",
+                "value": 80
               }
             ]
           }
@@ -363,10 +392,185 @@
       "timeShift": "0h",
       "title": "Ground Moisture",
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P951FEA4DE68E13C5"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "purple",
+                "value": null
+              },
+              {
+                "color": "blue",
+                "value": 0
+              },
+              {
+                "color": "green",
+                "value": 20
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "humidity"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 5,
+        "x": 0,
+        "y": 12
+      },
+      "id": 5,
+      "options": {
+        "minVizHeight": 68,
+        "minVizWidth": 75,
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": true,
+        "showThresholdMarkers": true,
+        "sizing": "manual",
+        "text": {}
+      },
+      "pluginVersion": "11.3.1",
+      "targets": [
+        {
+          "query": "from(bucket: \"iot-data\")\r\n  |> range(start: -1m) // Query the last minute to keep it efficient\r\n  |> filter(fn: (r) => r._measurement == \"plant_data\")\r\n  |> filter(fn: (r) => r._field == \"air_moisture\")\r\n  |> filter(fn: (r) => r.plant_name == \"${selected_plant}\")\r\n  |> last() // Select only the most recent value",
+          "refId": "A"
+        }
+      ],
+      "title": "Air Moisture of ${selected_plant}",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P951FEA4DE68E13C5"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": true,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Bodenfeuchte",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "blue",
+                "value": 20
+              },
+              {
+                "color": "blue",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 11,
+        "x": 5,
+        "y": 12
+      },
+      "hideTimeOverride": true,
+      "id": 6,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P951FEA4DE68E13C5"
+          },
+          "hide": false,
+          "query": "from(bucket: \"iot-data\")\r\n  |> range(start: -1h)\r\n  |> filter(fn: (r) => r._measurement == \"plant_data\")\r\n  |> filter(fn: (r) => r._field == \"air_moisture\") \r\n  |> filter(fn: (r) => r.plant_name == \"${selected_plant}\") \r\n",
+          "refId": "A"
+        }
+      ],
+      "timeShift": "0h",
+      "title": "Air Moisture",
+      "type": "timeseries"
     }
   ],
   "preload": false,
-  "refresh": "5s",
   "schemaVersion": 40,
   "tags": [],
   "templating": {
@@ -481,13 +685,13 @@
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Plant Data Display",
   "uid": "ce5nf3s316v40b",
-  "version": 36,
+  "version": 44,
   "weekStart": ""
 }
