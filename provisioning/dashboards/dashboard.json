@@ -30,6 +30,75 @@
       "fieldConfig": {
         "defaults": {
           "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 40,
+          "min": 10,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 15
+              },
+              {
+                "color": "red",
+                "value": 35
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 5,
+        "x": 0,
+        "y": 0
+      },
+      "id": 3,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": true,
+        "showThresholdMarkers": true,
+        "sizing": "auto",
+        "text": {}
+      },
+      "pluginVersion": "11.3.1",
+      "targets": [
+        {
+          "hide": false,
+          "query": "from(bucket: \"iot-data\")\r\n  |> range(start: -1m) // Query the last 5 minutes to keep it efficient\r\n  |> filter(fn: (r) => r._measurement == \"plant_data\")\r\n  |> filter(fn: (r) => r._field == \"temperature\")\r\n  |> filter(fn: (r) => r.plant_name == \"${selected_plant}\")\r\n  |> last() // Select only the most recent value",
+          "refId": "A"
+        }
+      ],
+      "title": "Current Temperature of ${selected_plant}",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P951FEA4DE68E13C5"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#ffffff",
             "mode": "palette-classic"
           },
           "custom": {
@@ -50,6 +119,9 @@
             },
             "insertNulls": false,
             "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
@@ -62,7 +134,7 @@
               "mode": "none"
             },
             "thresholdsStyle": {
-              "mode": "dashed"
+              "mode": "line"
             }
           },
           "mappings": [],
@@ -90,11 +162,12 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
+        "h": 6,
+        "w": 11,
+        "x": 5,
         "y": 0
       },
+      "hideTimeOverride": true,
       "id": 2,
       "options": {
         "legend": {
@@ -116,8 +189,79 @@
         }
       ],
       "timeShift": "0h",
-      "title": "Temperature",
+      "title": "Temperature Timeline of ${selected_plant}",
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P951FEA4DE68E13C5"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "purple",
+                "value": null
+              },
+              {
+                "color": "blue",
+                "value": 0
+              },
+              {
+                "color": "green",
+                "value": 20
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "humidity"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 5,
+        "x": 0,
+        "y": 6
+      },
+      "id": 4,
+      "options": {
+        "minVizHeight": 68,
+        "minVizWidth": 75,
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": true,
+        "showThresholdMarkers": true,
+        "sizing": "manual",
+        "text": {}
+      },
+      "pluginVersion": "11.3.1",
+      "targets": [
+        {
+          "query": "from(bucket: \"iot-data\")\r\n  |> range(start: -1m) // Query the last minute to keep it efficient\r\n  |> filter(fn: (r) => r._measurement == \"plant_data\")\r\n  |> filter(fn: (r) => r._field == \"ground_moisture\")\r\n  |> filter(fn: (r) => r.plant_name == \"${selected_plant}\")\r\n  |> last() // Select only the most recent value",
+          "refId": "A"
+        }
+      ],
+      "title": "Ground Moisture of ${selected_plant}",
+      "type": "gauge"
     },
     {
       "datasource": {
@@ -185,11 +329,12 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 8
+        "h": 6,
+        "w": 11,
+        "x": 5,
+        "y": 6
       },
+      "hideTimeOverride": true,
       "id": 1,
       "options": {
         "legend": {
@@ -221,6 +366,7 @@
     }
   ],
   "preload": false,
+  "refresh": "5s",
   "schemaVersion": 40,
   "tags": [],
   "templating": {
@@ -240,17 +386,108 @@
         ],
         "query": "Efeutute",
         "type": "textbox"
+      },
+      {
+        "current": {
+          "text": "18",
+          "value": "18"
+        },
+        "definition": "from(bucket: \"iot-data\")\r\n  |> range(start: -1y)\r\n  |> filter(fn: (r) => r._measurement == \"optimal_conditions\") \r\n  |> filter(fn: (r) => r.plant_name == \"${selected_plant}\")\r\n  |> filter(fn: (r) => r._field == \"optimal_temp_min\")\r\n  |> last()\r\n  ",
+        "label": "Optimal min temp",
+        "name": "optimal_temp_min",
+        "options": [],
+        "query": {
+          "query": "from(bucket: \"iot-data\")\r\n  |> range(start: -1y)\r\n  |> filter(fn: (r) => r._measurement == \"optimal_conditions\") \r\n  |> filter(fn: (r) => r.plant_name == \"${selected_plant}\")\r\n  |> filter(fn: (r) => r._field == \"optimal_temp_min\")\r\n  |> last()\r\n  "
+        },
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "28",
+          "value": "28"
+        },
+        "definition": "from(bucket: \"iot-data\")\r\n  |> range(start: -1y)\r\n  |> filter(fn: (r) => r._measurement == \"optimal_conditions\") \r\n  |> filter(fn: (r) => r.plant_name == \"${selected_plant}\")\r\n  |> filter(fn: (r) => r._field == \"optimal_temp_max\")\r\n  |> last()\r\n  ",
+        "name": "optimal_temp_max",
+        "options": [],
+        "query": {
+          "query": "from(bucket: \"iot-data\")\r\n  |> range(start: -1y)\r\n  |> filter(fn: (r) => r._measurement == \"optimal_conditions\") \r\n  |> filter(fn: (r) => r.plant_name == \"${selected_plant}\")\r\n  |> filter(fn: (r) => r._field == \"optimal_temp_max\")\r\n  |> last()\r\n  "
+        },
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "20",
+          "value": "20"
+        },
+        "definition": "from(bucket: \"iot-data\")\r\n  |> range(start: -1y)\r\n  |> filter(fn: (r) => r._measurement == \"optimal_conditions\") \r\n  |> filter(fn: (r) => r.plant_name == \"${selected_plant}\")\r\n  |> filter(fn: (r) => r._field == \"optimal_ground_moisture_min\")\r\n  |> last()\r\n  ",
+        "name": "optimal_ground_moisture_min",
+        "options": [],
+        "query": {
+          "query": "from(bucket: \"iot-data\")\r\n  |> range(start: -1y)\r\n  |> filter(fn: (r) => r._measurement == \"optimal_conditions\") \r\n  |> filter(fn: (r) => r.plant_name == \"${selected_plant}\")\r\n  |> filter(fn: (r) => r._field == \"optimal_ground_moisture_min\")\r\n  |> last()\r\n  "
+        },
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "80",
+          "value": "80"
+        },
+        "definition": "from(bucket: \"iot-data\")\r\n  |> range(start: -1y)\r\n  |> filter(fn: (r) => r._measurement == \"optimal_conditions\") \r\n  |> filter(fn: (r) => r.plant_name == \"${selected_plant}\")\r\n  |> filter(fn: (r) => r._field == \"optimal_ground_moisture_max\")\r\n  |> last()\r\n  ",
+        "name": "optimal_ground_moisture_max",
+        "options": [],
+        "query": {
+          "query": "from(bucket: \"iot-data\")\r\n  |> range(start: -1y)\r\n  |> filter(fn: (r) => r._measurement == \"optimal_conditions\") \r\n  |> filter(fn: (r) => r.plant_name == \"${selected_plant}\")\r\n  |> filter(fn: (r) => r._field == \"optimal_ground_moisture_max\")\r\n  |> last()\r\n  "
+        },
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "20",
+          "value": "20"
+        },
+        "definition": "from(bucket: \"iot-data\")\r\n  |> range(start: -1y)\r\n  |> filter(fn: (r) => r._measurement == \"optimal_conditions\") \r\n  |> filter(fn: (r) => r.plant_name == \"${selected_plant}\")\r\n  |> filter(fn: (r) => r._field == \"optimal_air_moisture_min\")\r\n  |> last()\r\n  ",
+        "name": "optimal_air_moisture_min",
+        "options": [],
+        "query": {
+          "query": "from(bucket: \"iot-data\")\r\n  |> range(start: -1y)\r\n  |> filter(fn: (r) => r._measurement == \"optimal_conditions\") \r\n  |> filter(fn: (r) => r.plant_name == \"${selected_plant}\")\r\n  |> filter(fn: (r) => r._field == \"optimal_air_moisture_min\")\r\n  |> last()\r\n  "
+        },
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "80",
+          "value": "80"
+        },
+        "definition": "from(bucket: \"iot-data\")\r\n  |> range(start: -1y)\r\n  |> filter(fn: (r) => r._measurement == \"optimal_conditions\") \r\n  |> filter(fn: (r) => r.plant_name == \"${selected_plant}\")\r\n  |> filter(fn: (r) => r._field == \"optimal_air_moisture_max\")\r\n  |> last()\r\n  ",
+        "name": "optimal_air_moisture_max",
+        "options": [],
+        "query": {
+          "query": "from(bucket: \"iot-data\")\r\n  |> range(start: -1y)\r\n  |> filter(fn: (r) => r._measurement == \"optimal_conditions\") \r\n  |> filter(fn: (r) => r.plant_name == \"${selected_plant}\")\r\n  |> filter(fn: (r) => r._field == \"optimal_air_moisture_max\")\r\n  |> last()\r\n  "
+        },
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
       }
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Plant Data Display",
   "uid": "ce5nf3s316v40b",
-  "version": 13,
+  "version": 32,
   "weekStart": ""
 }
