@@ -1,0 +1,28 @@
+{
+    "plants": {
+        "Efeutute": {
+            "optimalTempMin": 18,
+            "optimalTempMax": 28,
+            "optimalAirMoistureMin": 20,
+            "optimalAirMoistureMax": 80,
+            "optimalGroundMoistureMin": 20,
+            "optimalGroundMoistureMax": 80
+        },
+        "Monstera": {
+            "optimalTempMin": 13,
+            "optimalTempMax": 23,
+            "optimalAirMoistureMin": 10,
+            "optimalAirMoistureMax": 90,
+            "optimalGroundMoistureMin": 30,
+            "optimalGroundMoistureMax": 70
+        },
+        "Ficus": {
+            "optimalTempMin": 21,
+            "optimalTempMax": 31,
+            "optimalAirMoistureMin": 30,
+            "optimalAirMoistureMax": 70,
+            "optimalGroundMoistureMin": 10,
+            "optimalGroundMoistureMax": 90
+        }
+    }
+}
