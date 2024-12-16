@@ -1,3 +1,5 @@
+[Deutsches README](README.de.md)
+
 # Installation of the system on a new machine
 
 This guide will lead you through the installation of the system on a new machine. All tests were done on Windows machines, a guide for Linux may follow
